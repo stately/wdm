@@ -5,6 +5,7 @@ package com.statelyis.wdm.transaction.service;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import com.statelyis.wdm.transaction.model.TransactionModel;
 @Service
 public class DefaultTransactionServiceImpl implements TransactionService{
 
+	@Autowired
 	private TransactionDAO transactionDAO;
 	
 	public TransactionModel findById(String id) {
@@ -32,14 +34,6 @@ public class DefaultTransactionServiceImpl implements TransactionService{
 	
 	public ArrayList<TransactionModel> findAll() {
 		return (ArrayList<TransactionModel>)transactionDAO.findAll();
-	}
-
-	public TransactionDAO getTransactionDAO() {
-		return transactionDAO;
-	}
-
-	public void setTransactionDAO(TransactionDAO transactionDAO) {
-		this.transactionDAO = transactionDAO;
 	}
 
 }

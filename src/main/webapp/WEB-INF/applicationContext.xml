@@ -14,13 +14,10 @@
            http://www.springframework.org/schema/aop
            http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
            ">
-<!-- 
+
  		<context:annotation-config/>
-		<context:component-scan base-package="com.statelyis">
-		    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
-		    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
-		</context:component-scan>
-			         -->
+		<context:component-scan base-package="com.statelyis"/>
+			        
 			         
     <!-- enabling annotation driven configuration /-->
     <tx:annotation-driven transaction-manager="transactionManager"/>
@@ -57,6 +54,8 @@
 	    <property name="dataSource" ref="dataSource" />
   	</bean>
   	
+
+<!-- 
   	<bean id="transactionFacade" class="com.statelyis.wdm.transaction.facade.DefaultTransactionFacadeImpl">
   		<property name="transactionService" ref="transactionService"/>
   		<property name="transactionConverter" ref="transactionConverter"/>
@@ -69,5 +68,7 @@
 	<bean id="transactionDAO" class="com.statelyis.wdm.transaction.dao.TransactionDaoImpl"/>
 	
 	<bean id="transactionConverter" class="com.statelyis.wdm.transaction.converter.TransactionConverter"/>
+ -->	
+
 
 </beans>

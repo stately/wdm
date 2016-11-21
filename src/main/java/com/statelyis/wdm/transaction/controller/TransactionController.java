@@ -1,25 +1,32 @@
 package com.statelyis.wdm.transaction.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.statelyis.wdm.controller.AbstractController;
 import com.statelyis.wdm.transaction.data.TransactionData;
 import com.statelyis.wdm.transaction.facade.TransactionFacade;
 import com.statelyis.wdm.transaction.service.TransactionService;
 
+import io.swagger.annotations.Api;
+
 /**
  * @author jon.holmes
  *
  */
-@Controller(value="transactionController")
-@RequestMapping("/transaction.htm")
+@Controller
+@Api(description = "transaction API")
 public class TransactionController extends AbstractController{
-	
+
 	@Autowired
 	private TransactionService transactionService;
 	
@@ -27,45 +34,31 @@ public class TransactionController extends AbstractController{
 	private TransactionFacade transactionFacade;
 	
 	static final String DESTINATION_CREATE_TRANSACTION_PAGE = "transaction/createTransaction";
-	
-    @RequestMapping(method = RequestMethod.GET)
-	public String readEntity(ModelMap model){
+    
+    @RequestMapping(value="/transactions", produces={"application/xml", "application/json"})
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody ArrayList<TransactionData> getTransactions() {
+    	ArrayList<TransactionData> al = transactionFacade.getTransactions();
+        return al;
+    }        
+    
+    @RequestMapping(value="/transactions", method = RequestMethod.GET)
+	String getTransactionsWithView(ModelMap model){
 
-    	transactionFacade.createTransaction(new TransactionData());
-    	model.addAttribute(TransactionData.NAME_TRANSACTIONS, transactionFacade.getTransactions());
+    	model.addAttribute(TransactionData.NAME_TRANSACTIONS, this.getTransactions());
     	TransactionData transaction = new TransactionData();
+    	transactionFacade.createTransaction(transaction);
     	model.addAttribute(TransactionData.NAME_TRANSACTION, transaction);
     	return DESTINATION_CREATE_TRANSACTION_PAGE;
-
-	}
+	}    
 
     
-    @RequestMapping(method = RequestMethod.POST)
-    public String editEntity( ModelMap model, @ModelAttribute("transaction") TransactionData t){
+    @RequestMapping(value="/transaction", method = RequestMethod.POST)
+    public String addTransaction( ModelMap model, @ModelAttribute("transaction") TransactionData t){
     	
-    	//return DESTINATION_LIST_TRANSACTION_PAGE;
-    	return null;
+    		transactionFacade.createTransaction(t);
+    		return DESTINATION_CREATE_TRANSACTION_PAGE;
     	
     }
-
-
-	public TransactionService getTransactionService() {
-		return transactionService;
-	}
-
-
-	public void setTransactionService(TransactionService transactionService) {
-		this.transactionService = transactionService;
-	}
-
-
-	public TransactionFacade getTransactionFacade() {
-		return transactionFacade;
-	}
-
-
-	public void setTransactionFacade(TransactionFacade transactionFacade) {
-		this.transactionFacade = transactionFacade;
-	}   
 }
     
