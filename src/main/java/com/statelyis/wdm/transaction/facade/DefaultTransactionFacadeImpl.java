@@ -6,7 +6,7 @@ import java.util.Iterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.statelyis.wdm.transaction.converter.TransactionConverter;
+import com.statelyis.wdm.transaction.converter.TransactionModelToDataConverter;
 import com.statelyis.wdm.transaction.data.TransactionData;
 import com.statelyis.wdm.transaction.model.TransactionModel;
 import com.statelyis.wdm.transaction.service.TransactionService;
@@ -18,7 +18,7 @@ public class DefaultTransactionFacadeImpl implements TransactionFacade{
 	private TransactionService transactionService;
 	
 	@Autowired
-	private TransactionConverter<TransactionData> transactionConverter;
+	private TransactionModelToDataConverter<TransactionData> transactionModelToDataConverter;
 	
 	public TransactionData getTransaction(String transactionId) {
 		transactionService.findById(transactionId);
@@ -37,7 +37,7 @@ public class DefaultTransactionFacadeImpl implements TransactionFacade{
 		ArrayList<TransactionData> transactionDatas = new ArrayList<TransactionData>();
 		Iterator<TransactionModel> i = transactionService.findAll().iterator();
 		while (i.hasNext()){
-			transactionDatas.add(transactionConverter.convert(i.next()));
+			transactionDatas.add(transactionModelToDataConverter.convert(i.next()));
 		}
 		return transactionDatas;
 	}	

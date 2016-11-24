@@ -15,8 +15,8 @@ import com.statelyis.wdm.transaction.model.TransactionModel;
  *
  */
 
-@Service("transactionConverter")
-public class TransactionConverter<T> implements Converter<TransactionModel, TransactionData> {
+@Service("transactionModelToDataConverter")
+public class TransactionModelToDataConverter<T> implements Converter<TransactionModel, TransactionData> {
 
 	public TransactionData convert(TransactionModel model) {
 		TransactionData data = new TransactionData();
