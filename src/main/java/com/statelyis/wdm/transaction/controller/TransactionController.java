@@ -56,6 +56,7 @@ public class TransactionController extends AbstractController{
     @RequestMapping(value="/transaction", method = RequestMethod.POST)
     public String addTransaction( ModelMap model, @ModelAttribute("transaction") TransactionData t){
     	
+    		//
     		transactionFacade.createTransaction(t);
     		return DESTINATION_CREATE_TRANSACTION_PAGE;
     	
