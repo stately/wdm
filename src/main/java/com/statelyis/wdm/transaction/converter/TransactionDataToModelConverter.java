@@ -15,12 +15,11 @@ import com.statelyis.wdm.transaction.model.TransactionModel;
  *
  */
 
-@Service("transactionConverter")
-public class TransactionConverter<T> implements Converter<TransactionModel, TransactionData> {
+@Service("transactionDataToModelConverter")
+public class TransactionDataToModelConverter<T> implements Converter<TransactionData, TransactionModel> {
 
-	public TransactionData convert(TransactionModel model) {
-		TransactionData data = new TransactionData();
-		data.setId(model.getId());
-		return data;
+	public TransactionModel convert(TransactionData data) {
+		TransactionModel model = new TransactionModel();
+		return model;
 	}
 }

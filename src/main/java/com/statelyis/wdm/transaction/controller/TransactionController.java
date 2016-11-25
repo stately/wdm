@@ -26,9 +26,6 @@ import io.swagger.annotations.Api;
 @Controller
 @Api(description = "transaction API")
 public class TransactionController extends AbstractController{
-
-	@Autowired
-	private TransactionService transactionService;
 	
 	@Autowired
 	private TransactionFacade transactionFacade;
@@ -47,18 +44,18 @@ public class TransactionController extends AbstractController{
 
     	model.addAttribute(TransactionData.NAME_TRANSACTIONS, this.getTransactions());
     	TransactionData transaction = new TransactionData();
-    	transactionFacade.createTransaction(transaction);
     	model.addAttribute(TransactionData.NAME_TRANSACTION, transaction);
     	return DESTINATION_CREATE_TRANSACTION_PAGE;
 	}    
 
     
-    @RequestMapping(value="/transaction", method = RequestMethod.POST)
+    @RequestMapping(value="/transactions", method = RequestMethod.POST)
     public String addTransaction( ModelMap model, @ModelAttribute("transaction") TransactionData t){
-    	
     		transactionFacade.createTransaction(t);
+        	model.addAttribute(TransactionData.NAME_TRANSACTIONS, this.getTransactions());
+        	TransactionData transaction = new TransactionData();
+        	model.addAttribute(TransactionData.NAME_TRANSACTION, transaction);
     		return DESTINATION_CREATE_TRANSACTION_PAGE;
-    	
     }
 }
     
