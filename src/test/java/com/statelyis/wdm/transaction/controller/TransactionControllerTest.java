@@ -5,13 +5,15 @@ package com.statelyis.wdm.transaction.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,10 +24,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.statelyis.wdm.transaction.data.TransactionData;
 import com.statelyis.wdm.transaction.facade.TransactionFacade;
+
+import org.hamcrest.Matchers.*;
+
 
 
 
@@ -110,11 +116,23 @@ public class TransactionControllerTest {
 	
 	@Test
 	public void testCreateTransaction() throws Exception {
+		
+		MvcResult result = this.mockMvc.perform(post("/transactions").param("id", "value").param("id1","value1")).andReturn();
+		
+		System.out.println(result);
+		System.out.println(result.getResponse());
+		System.out.println(result.getResponse().getContentAsString());
+		
+		Assert.assertEquals(result.getResponse().getForwardedUrl(), TransactionController.DESTINATION_CREATE_TRANSACTION_PAGE);
+		//Assert.
+		
 		this.mockMvc.perform(post("/transactions")
 		.param("id", "value")
 		.param("id1","value1"))
 		.andDo(print())
-		.andExpect(content().string(TransactionController.DESTINATION_CREATE_TRANSACTION_PAGE));
+		.andExpect(forwardedUrl(TransactionController.DESTINATION_CREATE_TRANSACTION_PAGE));
+		
+		//https://www.petrikainulainen.net/programming/spring-framework/unit-testing-of-spring-mvc-controllers-normal-controllers/
 	}
 
 }
